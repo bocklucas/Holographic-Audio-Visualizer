@@ -119,6 +119,12 @@ exports.Visualizer = function() {
 	};
 };
 
+exports.MicLoader = function(player) {
+	var self = this;
+	
+	this.player = player;
+}; 
+
 exports.SoundcloudLoader = function(player,uiUpdater) {
 	var self = this;
 	var client_id = "26095b994cc185bc665f4c9fcce8f211"; // to get an ID go to https://developers.soundcloud.com/

@@ -25,6 +25,7 @@ function AudioVisualizer(element) {
 }
 
 AudioVisualizer.prototype.initialize = function () {
+	console.log('Initalizing...');
 	this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera( 70, this.element.clientWidth / this.element.clientHeight, 1, 1000);
     this.camera.position.z = 225;
@@ -40,7 +41,7 @@ AudioVisualizer.prototype.initialize = function () {
 	var distance = 20;
 	var geometry = new THREE.Geometry();
 
-	for (i = 0; i < 1500; i++) {
+	for (i = 0; i < 300; i++) {
 
 	  var vertex = new THREE.Vector3();
 
@@ -62,7 +63,7 @@ AudioVisualizer.prototype.initialize = function () {
 	geometry.colors = this.particleColors
 
 	this.particleMaterial = new THREE.PointsMaterial({
-		size: 4,
+		size: 3,
 		map: new THREE.TextureLoader().load("https://threejs.org/examples/textures/sprites/disc.png"),
 		vertexColors: THREE.VertexColors,
 
@@ -96,32 +97,32 @@ AudioVisualizer.prototype.toggle = function() {
 AudioVisualizer.prototype.render = function(audioSource, clamp=96) {
 
 	// get the average for the first channel
-	const array = audioSource.streamData.slice(0, clamp)
+	if(audioSource) {
+		const array = audioSource.slice(0, clamp)
 
-	// update particles
- 	var time = Date.now() * 0.0001;
-	this.particles.rotation.y = time;
+		// update particles
+		var time = Date.now() * 0.0001;
+		this.particles.rotation.y = time;
 
-	var distance = 20
-	var vertices = this.particles.geometry.vertices;
-	for ( var i = 0; i < vertices.length; i++ ) {
+		var distance = 30
+		var vertices = this.particles.geometry.vertices;
+		for ( var i = 0; i < vertices.length; i++ ) {
 
-		var data = array[i % (array.length-1)]
-		var augmentationValue = data/5 + distance
+			var data = array[i % (array.length-1)]
+			var augmentationValue = data*10 + distance
 
-		var theta = this.thetaSpread[i];
-	  	var phi = this.phiSpread[i];
+			var theta = this.thetaSpread[i];
+			var phi = this.phiSpread[i];
 
-    	vertices[i].x = augmentationValue * Math.sin(theta) * Math.cos(phi);
-		vertices[i].y = augmentationValue * Math.sin(theta) * Math.sin(phi);
-	  	vertices[i].z = augmentationValue * Math.cos(theta);
+			vertices[i].x = augmentationValue * Math.sin(theta) * Math.cos(phi);
+			vertices[i].y = augmentationValue * Math.sin(theta) * Math.sin(phi);
+			vertices[i].z = augmentationValue * Math.cos(theta);
+		}
 
-	  	var h = 1 - (data / 600 + 0.1)
+		this.particles.geometry.verticesNeedUpdate = true;
+		this.particles.geometry.colorsNeedUpdate = true;
+		this.renderer.render(this.scene, this.camera);
 	}
-
-	this.particles.geometry.verticesNeedUpdate = true;
-	this.particles.geometry.colorsNeedUpdate = true;
-    this.renderer.render(this.scene, this.camera);
 }
 
 AudioVisualizer.prototype.animate = function(audioSource) {

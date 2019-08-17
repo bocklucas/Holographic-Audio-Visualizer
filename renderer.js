@@ -5,9 +5,11 @@ const audio = require('./audio-source')
 // const coverArtAnimation = require('./animation.js');
 const electron = require('electron');
 // visualizers
-const SpectrumVisualizer = require('./spectrum-visualizer.js');
+// const SpectrumVisualizer = require('./spectrum-visualizer.js');
 const ParticleVisualizer = require('./particle-visualizer.js');
-const CubeVisualizer = require('./cube-visualizer.js');
+// const CubeVisualizer = require('./cube-visualizer.js');
+const getUserMedia = require('get-user-media-promise');
+const MicrophoneStream = require('microphone-stream');
 
 const playlist = 'stefandasbach/sets/lounge';
 
@@ -17,8 +19,8 @@ player.volume = 1;
 var selectedVisualizer = 0;
 var visualizers = [
     new ParticleVisualizer(document.getElementById("particle")), 
-    new CubeVisualizer(document.getElementById("cube")), 
-    new SpectrumVisualizer(document.getElementById("spectrum"))
+    // new CubeVisualizer(document.getElementById("cube")), 
+    // new SpectrumVisualizer(document.getElementById("spectrum"))
 ];
 
 var loader = new audio.SoundcloudLoader(player);
@@ -107,18 +109,29 @@ function animateVisualizer(index) {
 
 loader.loadStream('https://soundcloud.com/' + playlist, function() {
 	const albumArt = loader.albumArt()
-	const streamList = loader.streamUrl().map(function(url, idx) {return {"url": url, "artwork": albumArt[idx] ? albumArt[idx] : undefined}})
-	audioSource = new audio.SoundCloudAudioSource(player, streamList, onStream);
-	audioSource.shuffle();
-	audioSource.play()
+    const streamList = loader.streamUrl().map(function(url, idx) {return {"url": url, "artwork": albumArt[idx] ? albumArt[idx] : undefined}})
+    var micStream = new MicrophoneStream();
+ 
+    getUserMedia({ video: false, audio: true })
+    .then(function(stream) {
+      micStream.setStream(stream);
 
+    }).catch(function(error) {
+      console.log(error);
+    });
+	
     // Create visualizers
     for (let i = 0; i<visualizers.length; i++) {
         visualizers[i].initialize();
     }
+    micStream.on('data', function(chunk) {
+        var raw = MicrophoneStream.toRaw(chunk)
+        audioSource=raw;
 
-    // Start the visible one
-	animateVisualizer(selectedVisualizer);
+        // Start the visible one
+        animateVisualizer(selectedVisualizer);
+    });
+    
 
 }, function() {})
 
