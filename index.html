@@ -18,18 +18,6 @@
         right:0;
         bottom:0;
        }
-        .cover-art {
-          transform: scaleX(-1);
-          filter: FlipH;
-          padding: 50px;
-          padding-left: 300px;
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          height: 150px;
-          width: 150px;
-          z-index: 2;
-        }
         .hidden {
           display: none;
         }
@@ -42,9 +30,8 @@
   </head>
   <body class="black">
     <audio class="hidden" id="player" controls="" autoplay="" preload autobuffer></audio>
-    <img src="" id="cover-art" class="cover-art"></img>
-    <div id="cube" class="fullscreen"></div>
     <div id="particle" class="fullscreen"></div>
+    <div id="cube" class="fullscreen"></div>
     <div id="spectrum" class="fullscreen"></div>
     <script>
       // You can also require other files to run in this process

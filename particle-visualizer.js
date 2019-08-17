@@ -27,7 +27,7 @@ function AudioVisualizer(element) {
 AudioVisualizer.prototype.initialize = function () {
 	this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera( 70, this.element.clientWidth / this.element.clientHeight, 1, 1000);
-    this.camera.position.z = 200;
+    this.camera.position.z = 225;
     this.camera.position.y = 40;
 
     var ambientLight = new THREE.AmbientLight( 0x606060 ); // soft white light
@@ -37,10 +37,10 @@ AudioVisualizer.prototype.initialize = function () {
     light.position.set( 60, 40, 20 );
     this.scene.add(light);
 
-	var distance = 30;
+	var distance = 20;
 	var geometry = new THREE.Geometry();
 
-	for (var i = 0; i < 1500; i++) {
+	for (i = 0; i < 1500; i++) {
 
 	  var vertex = new THREE.Vector3();
 
@@ -54,8 +54,7 @@ AudioVisualizer.prototype.initialize = function () {
 	  vertex.y = distance * Math.sin(theta) * Math.sin(phi);
 	  vertex.z = distance * Math.cos(theta);
 
-      this.particleColors[i] = new THREE.Color();
-      this.particleColors[i].setHSL( 0.5, 1.0, 0.5 );
+      this.particleColors[i] = new THREE.Color(0.2,0.2, 0.9);
 
 	  geometry.vertices.push(vertex);
 	}
@@ -100,10 +99,10 @@ AudioVisualizer.prototype.render = function(audioSource, clamp=96) {
 	const array = audioSource.streamData.slice(0, clamp)
 
 	// update particles
- 	var time = Date.now() * 0.00015;
+ 	var time = Date.now() * 0.0001;
 	this.particles.rotation.y = time;
 
-	var distance = 30
+	var distance = 20
 	var vertices = this.particles.geometry.vertices;
 	for ( var i = 0; i < vertices.length; i++ ) {
 
@@ -118,7 +117,6 @@ AudioVisualizer.prototype.render = function(audioSource, clamp=96) {
 	  	vertices[i].z = augmentationValue * Math.cos(theta);
 
 	  	var h = 1 - (data / 600 + 0.1)
-	  	this.particleColors[i].setHSL(h, 1, 0.7);
 	}
 
 	this.particles.geometry.verticesNeedUpdate = true;

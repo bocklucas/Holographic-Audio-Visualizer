@@ -2,7 +2,7 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 const audio = require('./audio-source')
-const coverArtAnimation = require('./animation.js');
+// const coverArtAnimation = require('./animation.js');
 const electron = require('electron');
 // visualizers
 const SpectrumVisualizer = require('./spectrum-visualizer.js');
@@ -16,8 +16,8 @@ player.volume = 1;
 
 var selectedVisualizer = 0;
 var visualizers = [
-    new CubeVisualizer(document.getElementById("cube")), 
     new ParticleVisualizer(document.getElementById("particle")), 
+    new CubeVisualizer(document.getElementById("cube")), 
     new SpectrumVisualizer(document.getElementById("spectrum"))
 ];
 
@@ -56,13 +56,7 @@ function unfade(element) {
 Render the album artwork when a new stream is played
 */
 function onStream(stream) {
-    const art = document.getElementById('cover-art')
-	art.src = stream.artwork;
-
-    unfade(art);
-    setTimeout(function() {
-        fade(art);
-    }, 10000)
+    
 }
 
 // Controls
