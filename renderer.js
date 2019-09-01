@@ -1,13 +1,6 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
 const audio = require('./audio-source')
-// const coverArtAnimation = require('./animation.js');
 const electron = require('electron');
-// visualizers
-// const SpectrumVisualizer = require('./spectrum-visualizer.js');
 const ParticleVisualizer = require('./particle-visualizer.js');
-// const CubeVisualizer = require('./cube-visualizer.js');
 var getUserMedia = require('get-user-media-promise');
 var MicrophoneStream = require('microphone-stream');
 
@@ -19,8 +12,6 @@ player.volume = 1;
 var selectedVisualizer = 0;
 var visualizers = [
     new ParticleVisualizer(document.getElementById("particle")), 
-    // new CubeVisualizer(document.getElementById("cube")), 
-    // new SpectrumVisualizer(document.getElementById("spectrum"))
 ];
 
 var loader = new audio.SoundcloudLoader(player);
@@ -66,7 +57,6 @@ function animateVisualizer(index) {
     for (let i = 0; i<visualizers.length; i++) {
         if (i == index) {
             visualizers[i].element.style.display = 'inline-block'
-            // console.log(audioSource);
             visualizers[i].animate(micStream);
             // hack to fix a redraw bug
             window.dispatchEvent(new Event('resize'));

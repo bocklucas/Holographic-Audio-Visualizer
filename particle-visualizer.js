@@ -36,15 +36,14 @@ AudioVisualizer.prototype.initialize = function () {
     light.position.set( 60, 40, 20 );
     this.scene.add(light);
 
-	var distance = 20;
+	var distance = 50;
 	var geometry = new THREE.Geometry();
 
-	for (i = 0; i < 1000; i++) {
-
+	for (i = 0; i < 1440; i += 1) {
 	  var vertex = new THREE.Vector3();
 
-	  this.thetaSpread[i] = THREE.Math.randFloatSpread(360);
-	  this.phiSpread[i] = THREE.Math.randFloatSpread(360);
+	  this.thetaSpread[i] = i
+	  this.phiSpread[i] = i*100
 
 	  var theta = this.thetaSpread[i];
 	  var phi = this.phiSpread[i];
@@ -61,13 +60,14 @@ AudioVisualizer.prototype.initialize = function () {
 	geometry.colors = this.particleColors
 
 	this.particleMaterial = new THREE.PointsMaterial({
-		size: 3,
+		size: 2,
 		map: new THREE.TextureLoader().load("https://threejs.org/examples/textures/sprites/disc.png"),
 		vertexColors: THREE.VertexColors,
 
 		transparent: true,
 		depthTest: false
 	})
+	
 	this.particles = new THREE.Points(geometry, this.particleMaterial);
 
     this.scene.add(this.particles);
@@ -95,19 +95,18 @@ AudioVisualizer.prototype.render = function() {
 
 	array = [1,1,1];
 	if(audioSource) {
-		array = audioSource.slice(0, 48);
+		array = audioSource.slice(0, 96);
 	}
-	console.log(`Particle Visualiser ${audioSource}`);
 		// update particles
-		var time = Date.now() * 0.0001;
+		var time = Date.now() * 0.0005;
 		this.particles.rotation.y = time;
 
-		var distance = 40
+		var distance = 80
 		var vertices = this.particles.geometry.vertices;
 		for ( var i = 0; i < vertices.length; i++ ) {
 
 			var data = array[i % (array.length-1)]
-			var augmentationValue = data*40 + distance
+			var augmentationValue = i%(10*(data)) + distance
 
 			var theta = this.thetaSpread[i];
 			var phi = this.phiSpread[i];
