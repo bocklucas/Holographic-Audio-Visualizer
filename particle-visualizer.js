@@ -1,5 +1,4 @@
 //particle-visualizer.js
-
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -25,7 +24,6 @@ function AudioVisualizer(element) {
 }
 
 AudioVisualizer.prototype.initialize = function () {
-	console.log('Initalizing...');
 	this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera( 70, this.element.clientWidth / this.element.clientHeight, 1, 1000);
     this.camera.position.z = 225;
@@ -41,7 +39,7 @@ AudioVisualizer.prototype.initialize = function () {
 	var distance = 20;
 	var geometry = new THREE.Geometry();
 
-	for (i = 0; i < 300; i++) {
+	for (i = 0; i < 1000; i++) {
 
 	  var vertex = new THREE.Vector3();
 
@@ -74,7 +72,6 @@ AudioVisualizer.prototype.initialize = function () {
 
     this.scene.add(this.particles);
 
-
     this.renderer = new THREE.WebGLRenderer();
     
     this.renderer.setSize( this.element.clientWidth, this.element.clientHeight );
@@ -94,22 +91,23 @@ AudioVisualizer.prototype.initialize = function () {
 AudioVisualizer.prototype.toggle = function() {
 }
 
-AudioVisualizer.prototype.render = function(audioSource, clamp=96) {
+AudioVisualizer.prototype.render = function() {
 
-	// get the average for the first channel
+	array = [1,1,1];
 	if(audioSource) {
-		const array = audioSource.slice(0, clamp)
-
+		array = audioSource.slice(0, 48);
+	}
+	console.log(`Particle Visualiser ${audioSource}`);
 		// update particles
 		var time = Date.now() * 0.0001;
 		this.particles.rotation.y = time;
 
-		var distance = 30
+		var distance = 40
 		var vertices = this.particles.geometry.vertices;
 		for ( var i = 0; i < vertices.length; i++ ) {
 
 			var data = array[i % (array.length-1)]
-			var augmentationValue = data*10 + distance
+			var augmentationValue = data*40 + distance
 
 			var theta = this.thetaSpread[i];
 			var phi = this.phiSpread[i];
@@ -122,7 +120,6 @@ AudioVisualizer.prototype.render = function(audioSource, clamp=96) {
 		this.particles.geometry.verticesNeedUpdate = true;
 		this.particles.geometry.colorsNeedUpdate = true;
 		this.renderer.render(this.scene, this.camera);
-	}
 }
 
 AudioVisualizer.prototype.animate = function(audioSource) {

@@ -8,8 +8,8 @@ const electron = require('electron');
 // const SpectrumVisualizer = require('./spectrum-visualizer.js');
 const ParticleVisualizer = require('./particle-visualizer.js');
 // const CubeVisualizer = require('./cube-visualizer.js');
-const getUserMedia = require('get-user-media-promise');
-const MicrophoneStream = require('microphone-stream');
+var getUserMedia = require('get-user-media-promise');
+var MicrophoneStream = require('microphone-stream');
 
 const playlist = 'stefandasbach/sets/lounge';
 
@@ -24,39 +24,9 @@ var visualizers = [
 ];
 
 var loader = new audio.SoundcloudLoader(player);
-var audioSource;
+var micStream = new MicrophoneStream();
+var audioSource = [1,1,1,1];
 
-function fade(element) {
-    var op = 1;  // initial opacity
-    var timer = setInterval(function () {
-        if (op <= 0.1){
-            clearInterval(timer);
-            element.style.display = 'none';
-        }
-        element.style.opacity = op;
-        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op -= op * 0.1;
-    }, 40);
-}
-
-
-function unfade(element) {
-    var op = 0.1;  // initial opacity
-    element.style.display = 'block';
-    var timer = setInterval(function () {
-        if (op >= 1){
-            clearInterval(timer);
-        }
-        element.style.opacity = op;
-        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op += op * 0.1;
-    }, 20);
-}
-
-
-/**
-Render the album artwork when a new stream is played
-*/
 function onStream(stream) {
     
 }
@@ -96,7 +66,8 @@ function animateVisualizer(index) {
     for (let i = 0; i<visualizers.length; i++) {
         if (i == index) {
             visualizers[i].element.style.display = 'inline-block'
-            visualizers[i].animate(audioSource)
+            // console.log(audioSource);
+            visualizers[i].animate(micStream);
             // hack to fix a redraw bug
             window.dispatchEvent(new Event('resize'));
         } else {
@@ -108,16 +79,11 @@ function animateVisualizer(index) {
 
 
 loader.loadStream('https://soundcloud.com/' + playlist, function() {
-	const albumArt = loader.albumArt()
-    const streamList = loader.streamUrl().map(function(url, idx) {return {"url": url, "artwork": albumArt[idx] ? albumArt[idx] : undefined}})
-    var micStream = new MicrophoneStream();
- 
     getUserMedia({ video: false, audio: true })
     .then(function(stream) {
       micStream.setStream(stream);
-
     }).catch(function(error) {
-      console.log(error);
+        console.log(error);
     });
 	
     // Create visualizers
@@ -125,12 +91,11 @@ loader.loadStream('https://soundcloud.com/' + playlist, function() {
         visualizers[i].initialize();
     }
     micStream.on('data', function(chunk) {
-        var raw = MicrophoneStream.toRaw(chunk)
-        audioSource=raw;
-
-        // Start the visible one
-        animateVisualizer(selectedVisualizer);
+        if(chunk) {
+            audioSource = MicrophoneStream.toRaw(chunk).slice(0,48);
+        }
     });
+    animateVisualizer(selectedVisualizer);        
     
 
 }, function() {})
