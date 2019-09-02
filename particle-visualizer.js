@@ -106,7 +106,7 @@ AudioVisualizer.prototype.render = function() {
 		for ( var i = 0; i < vertices.length; i++ ) {
 
 			var data = array[i % (array.length-1)]
-			var augmentationValue = i%(10*(data)) + distance
+			var augmentationValue = i%(20*(data)) + distance
 
 			var theta = this.thetaSpread[i];
 			var phi = this.phiSpread[i];

@@ -70,6 +70,9 @@ function createWindow () {
     slashes: true
   }))
 
+  mainWindow.maximize();
+  mainWindow.setFullScreen(true);
+
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 
