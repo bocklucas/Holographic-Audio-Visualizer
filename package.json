@@ -1,30 +1,32 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "~1.7.8"
-  },
-  "dependencies": {
-    "express": "^4.16.1",
-    "get-user-media-promise": "^1.1.4",
-    "microphone-stream": "^5.0.1",
-    "node-wit": "^5.0.0",
-    "react": "^16.9.0",
-    "three-orbit-controls": "^82.1.0"
-  }
+    "name": "electron-quick-start",
+    "version": "1.0.0",
+    "description": "A minimal Electron application",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": "https://github.com/electron/electron-quick-start",
+    "keywords": [
+        "Electron",
+        "quick",
+        "start",
+        "tutorial",
+        "demo"
+    ],
+    "author": "GitHub",
+    "license": "CC0-1.0",
+    "devDependencies": {
+        "electron": "~1.7.8"
+    },
+    "dependencies": {
+        "@picovoice/porcupine_manager": "1.2.0",
+        "express": "^4.16.1",
+        "get-user-media-promise": "^1.1.4",
+        "microphone-stream": "^5.0.1",
+        "node-wit": "^5.0.0",
+        "react": "^16.9.0",
+        "speak-tts": "^2.0.8",
+        "three-orbit-controls": "^82.1.0"
+    }
 }

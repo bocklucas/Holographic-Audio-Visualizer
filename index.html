@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>ALFRED</title>
     <script src='https://threejs.org/build/three.min.js'></script>
-     <script type="text/javascript" src="https://connect.soundcloud.com/sdk.js"></script>
-     <style type="text/css">
-       body {
-        margin: 0;
-       }
-
-       .fullscreen {
-        transform: scaleX(-1);
-        position: absolute;
-        top: 30px;
-        left:0;
-        right:0;
-        bottom:0;
-       }
+    <!-- <script src="./node_modules/@picovoice/web-voice-processor/src/web_voice_processor.js"></script>
+    <script src="./node_modules/@picovoice/porcupine_manager/src/porcupine_manager.js"></script> -->
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+        
+        .fullscreen {
+            transform: scaleX(-1);
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        
         .hidden {
-          display: none;
+            display: none;
         }
-
+        
         .black {
-          background-color: black;
+            background-color: black;
         }
+    </style>
+</head>
 
-     </style>
-  </head>
-  <body class="black">
+<body class="black">
     <audio class="hidden" id="player" controls="" autoplay="" preload autobuffer></audio>
     <div id="particle" class="fullscreen"></div>
-    <script src="./renderer.js"></script> 
+    <script src="./renderer.jsx"></script>
     <script src="./particle-visualizer.js"></script>
-  </body>
+    <!-- <script>
+        start();
+    </script> -->
+</body>
+
 </html>
