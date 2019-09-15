@@ -5,40 +5,36 @@
     <meta charset="UTF-8">
     <title>ALFRED</title>
     <script src='https://threejs.org/build/three.min.js'></script>
-    <!-- <script src="./node_modules/@picovoice/web-voice-processor/src/web_voice_processor.js"></script>
-    <script src="./node_modules/@picovoice/porcupine_manager/src/porcupine_manager.js"></script> -->
     <style type="text/css">
         body {
             margin: 0;
         }
         
-        .fullscreen {
-            transform: scaleX(-1);
-            position: absolute;
-            top: 30px;
-            left: 0;
-            right: 0;
-            bottom: 0;
+        .particle-visualizer {
+            width: 500px;
+            height: 500px;
+            float: right;
+            margin: 4px;
+            border: 3px solid black;
+            border-radius: 5px;
         }
         
         .hidden {
             display: none;
         }
         
-        .black {
-            background-color: black;
+        .body {
+            background-color: rgb(255, 0, 0);
         }
     </style>
 </head>
 
-<body class="black">
+<body class="body">
     <audio class="hidden" id="player" controls="" autoplay="" preload autobuffer></audio>
-    <div id="particle" class="fullscreen"></div>
-    <script src="./renderer.jsx"></script>
-    <script src="./particle-visualizer.js"></script>
-    <!-- <script>
-        start();
-    </script> -->
+    <div id="particle" class="particle-visualizer"></div>
+    <script src="./renderer.js"></script>
+    <script src="./components/Visuals/particle-visualizer.js"></script>
+    <script src="./components/Audio/audio-handler.js"></script>
 </body>
 
 </html>

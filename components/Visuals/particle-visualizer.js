@@ -1,9 +1,7 @@
-//particle-visualizer.js
 var c = 0;
 var dir = 1;
 
 function AudioVisualizer(element) {
-    //Rendering
     this.scene;
     this.camera;
     this.renderer;
@@ -11,7 +9,6 @@ function AudioVisualizer(element) {
 
     this.element = element;
 
-    //particles
     this.particles;
     this.particleMaterial;
     this.particleColors = new Array();
@@ -23,8 +20,8 @@ function AudioVisualizer(element) {
 AudioVisualizer.prototype.initialize = function() {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(70, this.element.clientWidth / this.element.clientHeight, 1, 1000);
-    this.camera.position.z = 225;
-    this.camera.position.y = 40;
+    this.camera.position.z = 100;
+    this.camera.position.y = 0;
 
     var ambientLight = new THREE.AmbientLight(0x606060); // soft white light
     this.scene.add(ambientLight);
@@ -49,7 +46,7 @@ AudioVisualizer.prototype.initialize = function() {
         vertex.y = distance * Math.sin(theta) * Math.sin(phi);
         vertex.z = distance * Math.cos(theta);
 
-        this.particleColors[i] = new THREE.Color(0.2, 0.2, 0.9);
+        this.particleColors[i] = new THREE.Color(1.0, 0.0, 0.0);
 
         geometry.vertices.push(vertex);
     }
@@ -94,15 +91,18 @@ AudioVisualizer.prototype.render = function() {
         array = audioSource.slice(0, 96);
     }
 
-    var time = Date.now() * 0.00005;
+    var time = Date.now() * 0.001;
+    this.particles.rotation.x = time;
     this.particles.rotation.y = time;
+    this.particles.rotation.z = time;
 
-    var distance = 80
+    var distance = 30
     var vertices = this.particles.geometry.vertices;
+    var colors = this.particles.geometry.colors;
     for (var i = 0; i < vertices.length; i++) {
 
         var data = array[i % (array.length - 1)]
-        var augmentationValue = i % (20 * (data)) + distance
+        var augmentationValue = i % (100 * (data)) + distance
 
         var theta = this.thetaSpread[i];
         var phi = this.phiSpread[i];
@@ -110,7 +110,9 @@ AudioVisualizer.prototype.render = function() {
         vertices[i].x = augmentationValue * Math.sin(theta) * Math.cos(phi);
         vertices[i].y = augmentationValue * Math.sin(theta) * Math.sin(phi);
         vertices[i].z = augmentationValue * Math.cos(theta);
-
+        colors[i].r = augmentationValue % 1 + 0.5;
+        colors[i].g = 0;
+        colors[i].b = 0;
     }
 
     this.particles.geometry.verticesNeedUpdate = true;

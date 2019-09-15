@@ -1,6 +1,5 @@
 const electron = require('electron')
 
-
 /** Express server for IPC */
 const express = require('express')
 const server = express()
